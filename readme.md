@@ -35,10 +35,12 @@ cd Jagakuin
 
 ## 2. Setup Backend
 cd backend
+
 composer install
 cp .env.example .env
 
 edit .env database:
+
     DB_CONNECTION=mysql
     DB_HOST=127.0.0.1
     DB_PORT=3306
@@ -47,6 +49,7 @@ edit .env database:
     DB_PASSWORD=
 
 generate key & migrate:
+
     php artisan key:generate
     php artisan migrate
     php artisan serve
@@ -56,4 +59,4 @@ cd frontend
 npm install
 npm run dev
 
-akses http://localhost:5173
+akses localhost
