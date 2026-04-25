@@ -6,26 +6,45 @@ use App\Http\Controllers\API\ChatController;
 use App\Http\Controllers\API\DealController;
 use App\Http\Controllers\API\ReviewController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\UserController;
+use App\Models\User;
 
-Route::get('/todos', function () {
-    return response()->json([
-        ['id' => 1, 'title' => 'Belajar React'],
-        ['id' => 2, 'title' => 'Belajar Laravel']
-    ]);
+/*
+|--------------------------------------------------------------------------
+| PUBLIC ROUTES (tanpa login)
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('auth')->group(function () {
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
 });
 
-Route::apiResource('posts', PostController::class);
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+/*
+|--------------------------------------------------------------------------
+| PROTECTED ROUTES (harus login)
+|--------------------------------------------------------------------------
+*/
 
-Route::get('/chats', [ChatController::class, 'index']);
-Route::post('/chat/send', [ChatController::class, 'send']);
-
-Route::get('/deals', [DealController::class, 'index']);
-Route::post('/deal/agree', [DealController::class, 'agree']);
-
-Route::get('/reviews', [ReviewController::class, 'index']);
-Route::post('/review', [ReviewController::class, 'store']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/me', [AuthController::class, 'me']);
+    Route::post('/logout', [AuthController::class, 'logout']);
 
 
+
+    // posts
+    Route::apiResource('posts', PostController::class);
+
+    // chats
+    Route::get('/chats', [ChatController::class, 'index']);
+    Route::post('/chat/send', [ChatController::class, 'send']);
+
+    // deals
+    Route::get('/deals', [DealController::class, 'index']);
+    Route::post('/deal/agree', [DealController::class, 'agree']);
+
+    // reviews
+    Route::get('/reviews', [ReviewController::class, 'index']);
+    Route::post('/review', [ReviewController::class, 'store']);
+});

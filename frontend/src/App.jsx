@@ -5,11 +5,14 @@ import ChatResponsive from "./pages/ChatResponsive";
 import ChatDetail from "./pages/ChatDetail";
 
 import LandingPage from "./pages/landingpage";
+import Auth from "./pages/auth";
 import Home from "./pages/home";
 import Services from "./pages/services";
 import Profile from "./pages/profile";
 import Tambah from "./pages/tambah";
 import ChatPage from "./pages/chatpage";
+
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function Layout() {
   const location = useLocation();
@@ -19,7 +22,6 @@ function Layout() {
 
   return (
     <div className="bg-background min-h-screen">
-
       {!hideNavbar && <Navbar />}
 
       <main
@@ -31,7 +33,15 @@ function Layout() {
       >
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/services" element={<Services />} />
 
           <Route path="/chat" element={<ChatPage />} />
