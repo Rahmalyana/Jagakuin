@@ -10,7 +10,7 @@ export default function Navbar() {
 
   // 🔍 Show search only on certain pages
   const showSearch = ["/", "/home", "/chat", "/services"].includes(
-    location.pathname
+    location.pathname,
   );
 
   useEffect(() => {
@@ -29,9 +29,7 @@ export default function Navbar() {
       <Link to={path} className="relative text-sm font-medium group">
         <span
           className={`transition ${
-            active
-              ? "text-accent"
-              : "text-primary/70 group-hover:text-primary"
+            active ? "text-accent" : "text-primary/70 group-hover:text-primary"
           }`}
         >
           {label}
@@ -62,7 +60,7 @@ export default function Navbar() {
           {/* 🔹 LOGO */}
           <Link to="/" className="flex items-center gap-2">
             <img
-              src="/src/assets/logo_jagakuin.png"
+              src="/src/assets/LOGOO.png"
               alt="Jagakuin Logo"
               className={`transition-all duration-300 ${
                 scrolled ? "w-8 h-8" : "w-9 h-9"
@@ -99,7 +97,6 @@ export default function Navbar() {
 
           {/* 🔹 RIGHT SIDE */}
           <div className="hidden md:flex items-center gap-4 ml-4">
-
             {/* ⭐ CTA TAMBAH */}
             <Link
               to="/tambah"
