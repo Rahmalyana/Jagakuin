@@ -54,8 +54,8 @@ generate key & migrate:
     php artisan serve
 
 ## 3. Setup Frontend (React)
-cd frontend
-npm install
-npm run dev
+    cd frontend
+    npm install
+    npm run dev
 
 akses localhost
