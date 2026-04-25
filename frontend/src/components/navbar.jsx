@@ -8,9 +8,8 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
-  // 🔍 Show search only on certain pages
   const showSearch = ["/", "/home", "/chat", "/services"].includes(
-    location.pathname,
+    location.pathname
   );
 
   useEffect(() => {
@@ -26,19 +25,27 @@ export default function Navbar() {
     const active = location.pathname === path;
 
     return (
-      <Link to={path} className="relative text-sm font-medium group">
-        <span
-          className={`transition ${
-            active ? "text-accent" : "text-primary/70 group-hover:text-primary"
-          }`}
-        >
-          {label}
-        </span>
+      <Link
+        to={path}
+        onClick={() => setOpen(false)}
+        className={`relative block py-3 px-4 text-sm font-medium group transition
+        ${
+          active
+            ? "text-white font-semibold bg-white/20 md:bg-transparent rounded-xl"
+            : "text-white/80 hover:text-white hover:bg-white/10 md:hover:bg-transparent rounded-xl"
+        }`}
+      >
+        <span>{label}</span>
 
+        {/* underline desktop only */}
         <span
-          className={`absolute left-0 -bottom-1 h-[2px] bg-accent transition-all duration-300 ${
-            active ? "w-full" : "w-0 group-hover:w-full"
+          className={`hidden md:block absolute left-4 right-4 -bottom-1 h-[2px] bg-white/80 transition-all duration-300
+          ${
+            active
+              ? "opacity-100 scale-x-100"
+              : "opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100"
           }`}
+          style={{ transformOrigin: "left" }}
         />
       </Link>
     );
@@ -46,126 +53,140 @@ export default function Navbar() {
 
   return (
     <header className="fixed top-0 w-full z-50 transition-all duration-300">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
         <div
-          className={`flex items-center justify-between 
-          backdrop-blur-xl rounded-2xl 
-          transition-all duration-300
+          className={`flex items-center justify-between gap-2 backdrop-blur-xl rounded-2xl transition-all duration-300
           ${
             scrolled
-              ? "mt-2 px-5 py-2 shadow-md bg-background/90 border border-primary/10 scale-[0.98]"
-              : "mt-4 px-6 py-3 shadow-sm bg-background/70 border border-transparent"
+              ? "mt-2 px-4 py-2 shadow-md bg-accent/95 border border-white/10 scale-[0.98]"
+              : "mt-3 md:mt-4 px-4 py-3 shadow-sm bg-accent/90 border border-transparent"
           }`}
         >
-          {/* 🔹 LOGO */}
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2 shrink-0">
             <img
               src="/src/assets/LOGOO.png"
-              alt="Jagakuin Logo"
+              alt="logo"
               className={`transition-all duration-300 ${
                 scrolled ? "w-8 h-8" : "w-9 h-9"
               }`}
             />
-            <span className="text-primary font-semibold">Jagakuin</span>
+            <span
+              className={`text-white font-semibold transition-all
+              ${
+                showSearch
+                  ? "hidden md:block" // mobile hidden, desktop tetap ada
+                  : "block"           // tampil di semua device
+              }`}
+            >
+              Jagakuin
+            </span>
           </Link>
 
-          {/* 🔹 MENU + SEARCH */}
-          <div className="hidden md:flex items-center gap-6">
+          {showSearch && (
+            <div className="flex-1 md:hidden">
+              <div className="relative">
+                <Search
+                  size={16}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-white/60"
+                />
+
+                <input
+                  type="text"
+                  placeholder="Cari layanan..."
+                  className="
+                    w-full
+                    pl-9 pr-4 py-2.5
+                    text-sm
+                    rounded-xl
+                    bg-white/10 backdrop-blur-md
+                    border border-white/20
+                    text-white placeholder:text-white/60
+                    outline-none
+                    focus:ring-2 focus:ring-white/30
+                    transition-all
+                  "
+                />
+              </div>
+            </div>
+          )}
+
+          {/* DESKTOP MENU */}
+          <div className="hidden md:flex items-center gap-4">
             {navItem("/home", "Home")}
             {navItem("/services", "Services")}
             {navItem("/chat", "Chat")}
             {navItem("/profile", "Profile")}
 
-            {/* 🔍 SEARCH (IMPROVED SIZE) */}
             {showSearch && (
               <div className="relative ml-2">
                 <Search
                   size={16}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-primary/40"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-primary/60"
                 />
                 <input
                   type="text"
                   placeholder="Cari layanan, chat..."
-                  className="w-48 lg:w-64 pl-9 pr-3 py-2 text-sm rounded-xl 
-                  border border-primary/20 bg-background 
-                  focus:outline-none focus:ring-2 focus:ring-accent/40 
-                  transition-all duration-200"
+                  className="w-44 lg:w-60 pl-9 pr-3 py-2 text-sm rounded-xl 
+                  border border-white/30 bg-white/90 text-primary 
+                  focus:outline-none focus:ring-2 focus:ring-white/40"
                 />
               </div>
             )}
           </div>
 
-          {/* 🔹 RIGHT SIDE */}
-          <div className="hidden md:flex items-center gap-4 ml-4">
-            {/* ⭐ CTA TAMBAH */}
+          <div className="hidden md:flex items-center gap-4 ml-2">
             <Link
               to="/tambah"
-              className="relative flex items-center gap-2 
-              bg-accent text-white 
-              px-5 py-2.5 rounded-xl 
-              shadow-lg shadow-accent/30
-              hover:scale-105 hover:shadow-xl 
-              transition-all duration-200"
+              className="flex items-center gap-2 
+              bg-primary text-white px-4 py-2.5 rounded-xl 
+              shadow-lg shadow-primary/30 hover:scale-105 transition"
             >
               <Plus size={18} />
               <span className="font-semibold">Tambah</span>
-
-              {/* glow effect */}
-              <span className="absolute inset-0 rounded-xl bg-accent/20 blur-md -z-10"></span>
             </Link>
 
-            {/* LOGIN */}
             <button
               onClick={() => setIsLogin(!isLogin)}
-              className="text-sm px-3 py-2 rounded-xl 
-              text-primary/70 hover:text-primary 
-              transition"
+              className="text-sm px-3 py-2 text-white/80 hover:text-white"
             >
               {isLogin ? "Logout" : "Login"}
             </button>
           </div>
 
-          {/* 🔹 MOBILE BUTTON */}
+          {/* MOBILE MENU BUTTON */}
           <button
             onClick={() => setOpen(!open)}
-            className="md:hidden p-2 rounded-lg hover:bg-primary/10 transition"
+            className="md:hidden p-2 text-white shrink-0"
           >
             {open ? <X /> : <Menu />}
           </button>
         </div>
       </div>
 
-      {/* 🔹 MOBILE MENU */}
+      {/* MOBILE DROPDOWN */}
       <div
-        className={`md:hidden px-4 mt-2 transition-all duration-300 overflow-hidden ${
-          open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+        className={`md:hidden px-4 mt-2 mb-2 transition-all duration-300 overflow-hidden ${
+          open ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="bg-background rounded-xl p-4 space-y-4 shadow border border-primary/10">
+        <div className="bg-accent/95 rounded-2xl p-5 space-y-5 shadow-lg border border-white/10">
+
           {navItem("/home", "Home")}
           {navItem("/services", "Services")}
           {navItem("/chat", "Chat")}
           {navItem("/profile", "Profile")}
 
-          {/* 🔍 SEARCH MOBILE */}
-          {showSearch && (
-            <input
-              type="text"
-              placeholder="Cari layanan, chat..."
-              className="w-full border border-primary/20 px-3 py-2 rounded-lg"
-            />
-          )}
-
           <Link
             to="/tambah"
-            className="block text-center bg-accent text-white py-2 rounded-xl font-semibold"
+            onClick={() => setOpen(false)}
+            className="block text-center bg-primary text-white py-3 rounded-xl font-semibold"
           >
             + Tambah Post
           </Link>
 
           <button
             onClick={() => setIsLogin(!isLogin)}
-            className="w-full border border-primary py-2 rounded-xl"
+            className="w-full border border-white/30 text-white py-3 rounded-xl"
           >
             {isLogin ? "Logout" : "Login"}
           </button>

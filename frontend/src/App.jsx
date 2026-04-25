@@ -9,31 +9,38 @@ import Home from "./pages/home";
 import Services from "./pages/services";
 import Profile from "./pages/profile";
 import Tambah from "./pages/tambah";
+import ChatPage from "./pages/chatpage";
 
 function Layout() {
   const location = useLocation();
 
-  // hide navbar di chat detail
+  // hide navbar di chat detail (full screen chat)
   const hideNavbar = location.pathname.startsWith("/chat/");
 
   return (
-    <>
+    <div className="bg-background min-h-screen">
+
       {!hideNavbar && <Navbar />}
 
-      <div className={`${!hideNavbar ? "pt-32" : ""} bg-background min-h-screen px-4`}>
+      <main
+        className={`
+          min-h-screen
+          ${!hideNavbar ? "pt-[90px]" : ""}
+          px-4 md:px-6
+        `}
+      >
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/home" element={<Home />} />
           <Route path="/services" element={<Services />} />
 
-          <Route path="/chat" element={<ChatResponsive />} />
-          <Route path="/chat/:id" element={<ChatDetail />} />
+          <Route path="/chat" element={<ChatPage />} />
 
           <Route path="/profile" element={<Profile />} />
           <Route path="/tambah" element={<Tambah />} />
         </Routes>
-      </div>
-    </>
+      </main>
+    </div>
   );
 }
 
