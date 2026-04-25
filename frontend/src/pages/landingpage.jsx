@@ -54,58 +54,22 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
-      {/* CONTOH */}
+      {/* CONTOH
       <motion.section
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
         className="px-6 md:px-16 py-12 text-center"
       >
-        <h3 className="text-2xl font-bold mb-4">Nanti dulu yh</h3>
+        <h3 className="text-2xl font-bold mb-4 text-primary">Nanti dulu yh</h3>
         <p className="text-gray-600 max-w-2xl mx-auto">P</p>
-      </motion.section>
-
-      {/* MENGAPA */}
-      <section className="px-6 md:px-16 py-12">
-        <h3 className="text-2xl font-bold text-center mb-10">
-          Mengapa JAGAKUIN?
-        </h3>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {[
-            {
-              title: "Kompensasi Tanpa Batas",
-              desc: "Bayar dengan uang? Bisa! Namun, kami memfasilitasi barter jasa atau barang sesuai kesepakatan Anda. Keterbatasan finansial bukan lagi penghalang untuk mendapatkan bantuan berkualitas.",
-            },
-            {
-              title: "Fokus Layanan Jangka Pendek",
-              desc: "Butuh penjaga hanya untuk beberapa jam atau maksimal 3 hari? JAGAKUIN dirancang untuk mobilitas tinggi masyarakat modern yang butuh solusi cepat tanpa kontrak rumit.",
-            },
-            {
-              title: "Komunitas yang Saling Menjaga",
-              desc: "JAGAKUIN bukan sekadar platform transaksi, melainkan ekosistem solidaritas. Kami mempertemukan orang yang butuh bantuan dengan mereka yang memiliki waktu luang untuk berkontribusi.",
-            },
-          ].map((item, i) => (
-            <motion.div
-              key={i}
-              whileHover={{ scale: 1.05 }}
-              className="p-6 rounded-xl shadow bg-white hover:shadow-lg transition"
-            >
-              <h4 className="font-semibold text-lg text-center mb-2 text-primary">
-                {item.title}
-              </h4>
-              <p className="text-gray-600 text-center">{item.desc}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+      </motion.section> */}
 
       {/* LAYANAN */}
       <section className="px-6 md:px-16 py-12">
-        <h3 className="text-2xl font-bold text-center mb-10">Layanan Kami</h3>
-        <p className="text-gray-600 text-center">
-          Kami hadir untuk membantu Anda menjaga hal yang paling berharga:
-        </p>
+        <h3 className="text-2xl font-bold text-center mb-10 text-primary">
+          Layanan Kami
+        </h3>
 
         <div className="grid md:grid-cols-3 gap-6 mt-6">
           {[
@@ -149,9 +113,44 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* MENGAPA */}
+      <section className="px-6 md:px-16 py-12">
+        <h3 className="text-2xl font-bold text-center mb-10 text-primary">
+          Mengapa JAGAKUIN?
+        </h3>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            {
+              title: "Kompensasi Tanpa Batas",
+              desc: "Bayar dengan uang? Bisa! Namun, kami memfasilitasi barter jasa atau barang sesuai kesepakatan Anda. Keterbatasan finansial bukan lagi penghalang untuk mendapatkan bantuan berkualitas.",
+            },
+            {
+              title: "Fokus Layanan Jangka Pendek",
+              desc: "Butuh penjaga hanya untuk beberapa jam atau maksimal 3 hari? JAGAKUIN dirancang untuk mobilitas tinggi masyarakat modern yang butuh solusi cepat tanpa kontrak rumit.",
+            },
+            {
+              title: "Komunitas yang Saling Menjaga",
+              desc: "JAGAKUIN bukan sekadar platform transaksi, melainkan ekosistem solidaritas. Kami mempertemukan orang yang butuh bantuan dengan mereka yang memiliki waktu luang untuk berkontribusi.",
+            },
+          ].map((item, i) => (
+            <motion.div
+              key={i}
+              whileHover={{ scale: 1.05 }}
+              className="p-6 rounded-xl shadow bg-white hover:shadow-lg transition"
+            >
+              <h4 className="font-semibold text-lg text-center mb-2 text-primary">
+                {item.title}
+              </h4>
+              <p className="text-gray-600 text-center">{item.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
       {/* TESTIMONI */}
       <section className="px-6 md:px-16 py-12 bg-background">
-        <h3 className="text-2xl font-bold text-center mb-10">
+        <h3 className="text-2xl font-bold text-center mb-10 text-primary">
           Apa Kata Mereka?
         </h3>
 
