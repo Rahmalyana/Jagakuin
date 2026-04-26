@@ -8,8 +8,8 @@ use App\Http\Controllers\API\ReviewController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\ProfileController;
 use App\Models\User;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -53,5 +53,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //service
     Route::post('/services', [ServiceController::class, 'store']);
-    
+
+    // profile
+    Route::get('/user', [ProfileController::class, 'show']);
+    Route::put('/user', [ProfileController::class, 'update']);
+    Route::put('/user/password', [ProfileController::class, 'updatePassword']);
+
 });

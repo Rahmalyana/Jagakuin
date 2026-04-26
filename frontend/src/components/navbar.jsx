@@ -7,6 +7,7 @@ export default function Navbar() {
   const [showModal, setShowModal] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -14,6 +15,12 @@ export default function Navbar() {
     location.pathname
   );
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLogin(!!token);
+  }, []);
+
+  // scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -23,11 +30,22 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Fungsi untuk handle pilihan di modal
+  // pilih jenis post
   const handleChoice = (type) => {
     setShowModal(false);
     setOpen(false);
     navigate("/tambah", { state: { type } });
+  };
+
+  // login/logout handler
+  const handleAuth = () => {
+    if (isLogin) {
+      localStorage.removeItem("token");
+      setIsLogin(false);
+      navigate("/"); // balik ke landing
+    } else {
+      navigate("/auth");
+    }
   };
 
   const navItem = (path, label) => {
@@ -46,7 +64,6 @@ export default function Navbar() {
       >
         <span>{label}</span>
 
-        {/* underline desktop only */}
         <span
           className={`hidden md:block absolute left-4 right-4 -bottom-1 h-[2px] bg-white/80 transition-all duration-300
           ${
@@ -72,6 +89,7 @@ export default function Navbar() {
               : "mt-3 md:mt-4 px-4 py-3 shadow-sm bg-accent/90 border border-transparent"
           }`}
           >
+            {/* LOGO */}
             <Link to="/" className="flex items-center gap-2 shrink-0">
               <img
                 src="/src/assets/LOGOO.png"
@@ -81,17 +99,15 @@ export default function Navbar() {
                 }`}
               />
               <span
-                className={`text-white font-semibold transition-all
-              ${
-                showSearch
-                  ? "hidden md:block" // mobile hidden, desktop tetap ada
-                  : "block" // tampil di semua device
-              }`}
+                className={`text-white font-semibold ${
+                  showSearch ? "hidden md:block" : "block"
+                }`}
               >
                 Jagakuin
               </span>
             </Link>
 
+            {/* SEARCH MOBILE */}
             {showSearch && (
               <div className="flex-1 md:hidden">
                 <div className="relative">
@@ -99,22 +115,10 @@ export default function Navbar() {
                     size={16}
                     className="absolute left-3 top-1/2 -translate-y-1/2 text-white/60"
                   />
-
                   <input
                     type="text"
                     placeholder="Cari layanan..."
-                    className="
-                    w-full
-                    pl-9 pr-4 py-2.5
-                    text-sm
-                    rounded-xl
-                    bg-white/10 backdrop-blur-md
-                    border border-white/20
-                    text-white placeholder:text-white/60
-                    outline-none
-                    focus:ring-2 focus:ring-white/30
-                    transition-all
-                  "
+                    className="w-full pl-9 pr-4 py-2.5 text-sm rounded-xl bg-white/10 border border-white/20 text-white placeholder:text-white/60 outline-none"
                   />
                 </div>
               </div>
@@ -135,68 +139,63 @@ export default function Navbar() {
                   />
                   <input
                     type="text"
-                    placeholder="Cari layanan, chat..."
-                    className="w-44 lg:w-60 pl-9 pr-3 py-2 text-sm rounded-xl 
-                  border border-white/30 bg-white/90 text-primary 
-                  focus:outline-none focus:ring-2 focus:ring-white/40"
+                    placeholder="Cari layanan..."
+                    className="w-44 lg:w-60 pl-9 pr-3 py-2 text-sm rounded-xl border bg-white/90"
                   />
                 </div>
               )}
             </div>
 
+            {/* DESKTOP RIGHT */}
             <div className="hidden md:flex items-center gap-4 ml-2">
-              {/* BUTTON TAMBAH DESKTOP */}
               <button
                 onClick={() => setShowModal(true)}
-                className="flex items-center gap-2 
-                bg-primary text-white px-4 py-2.5 rounded-xl 
-                shadow-lg shadow-primary/30 hover:scale-105 transition"
+                className="flex items-center gap-2 bg-primary text-white px-4 py-2.5 rounded-xl shadow hover:scale-105 transition"
               >
                 <Plus size={18} />
-                <span className="font-semibold">Tambah</span>
+                Tambah
               </button>
 
               <button
-                onClick={() => setIsLogin(!isLogin)}
+                onClick={handleAuth}
                 className="text-sm px-3 py-2 text-white/80 hover:text-white"
               >
                 {isLogin ? "Logout" : "Login"}
               </button>
             </div>
 
-            {/* MOBILE MENU BUTTON */}
+            {/* MOBILE BUTTON */}
             <button
               onClick={() => setOpen(!open)}
-              className="md:hidden p-2 text-white shrink-0"
+              className="md:hidden p-2 text-white"
             >
               {open ? <X /> : <Menu />}
             </button>
           </div>
         </div>
 
-        {/* MOBILE DROPDOWN */}
+        {/* MOBILE MENU */}
         <div
-          className={`md:hidden px-4 mt-2 mb-2 transition-all duration-300 overflow-hidden ${
-            open ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+          className={`md:hidden px-4 mt-2 mb-2 transition-all duration-300 ${
+            open ? "max-h-[500px]" : "max-h-0 overflow-hidden"
           }`}
         >
-          <div className="bg-accent/95 rounded-2xl p-5 space-y-5 shadow-lg border border-white/10">
+          <div className="bg-accent/95 rounded-2xl p-5 space-y-5 shadow-lg">
             {navItem("/home", "Home")}
             {navItem("/services", "Services")}
             {navItem("/chat", "Chat")}
             {navItem("/profile", "Profile")}
 
-            {/* BUTTON TAMBAH MOBILE */}
             <button
               onClick={() => setShowModal(true)}
-              className="w-full flex items-center justify-center gap-2 bg-primary text-white py-3 rounded-xl font-semibold"
+              className="w-full flex items-center justify-center gap-2 bg-primary text-white py-3 rounded-xl"
             >
               <Plus size={18} />
-              Tambah Post
+              Tambah
             </button>
 
             <button
-              onClick={() => setIsLogin(!isLogin)}
+              onClick={handleAuth}
               className="w-full border border-white/30 text-white py-3 rounded-xl"
             >
               {isLogin ? "Logout" : "Login"}
@@ -205,31 +204,34 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* POP-UP MODAL PILIHAN */}
+      {/* MODAL TAMBAH */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
-          <div className="bg-white rounded-[2.5rem] p-8 max-w-sm w-full text-center shadow-2xl animate-in zoom-in duration-300">
-            <h2 className="text-xl font-bold text-slate-800 mb-6">Pilih Jenis Postingan</h2>
-            <div className="flex flex-col gap-4">
-              <button
-                onClick={() => handleChoice("butuh")}
-                className="bg-accent text-white py-4 rounded-2xl font-bold hover:opacity-90 transition shadow-lg"
-              >
-                Membutuhkan Jasa
-              </button>
-              <button
-                onClick={() => handleChoice("sedia")}
-                className="border-2 border-accent text-accent py-4 rounded-2xl font-bold hover:bg-accent/5 transition"
-              >
-                Menyediakan Jasa
-              </button>
-              <button
-                onClick={() => setShowModal(false)}
-                className="text-slate-400 text-sm mt-2 hover:text-slate-600"
-              >
-                Batal
-              </button>
-            </div>
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[100] p-4">
+          <div className="bg-white rounded-[2rem] p-6 max-w-sm w-full text-center">
+            <h2 className="text-lg font-bold mb-4">
+              Pilih Jenis Postingan
+            </h2>
+
+            <button
+              onClick={() => handleChoice("butuh")}
+              className="w-full bg-accent text-white py-3 rounded-xl mb-2"
+            >
+              Membutuhkan Jasa
+            </button>
+
+            <button
+              onClick={() => handleChoice("sedia")}
+              className="w-full border border-accent text-accent py-3 rounded-xl"
+            >
+              Menyediakan Jasa
+            </button>
+
+            <button
+              onClick={() => setShowModal(false)}
+              className="mt-3 text-sm text-gray-400"
+            >
+              Batal
+            </button>
           </div>
         </div>
       )}

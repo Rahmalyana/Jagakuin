@@ -23,14 +23,12 @@ export default function ChatPage() {
   const [activeChat, setActiveChat] = useState(null);
   const [isMobileChatOpen, setIsMobileChatOpen] = useState(false);
 
-  // 🔥 SERVICE CONTEXT
   const [service] = useState({
     title: "Jaga Anak",
     price: "50k / hari",
     date: "25 April 2026",
   });
 
-  // 🔥 MESSAGES WITH DEAL
   const [messages, setMessages] = useState([
     {
       from: "other",
@@ -60,7 +58,6 @@ export default function ChatPage() {
     setIsMobileChatOpen(true);
   };
 
-  // 🔥 SEND MESSAGE + AUTO ATTACH SERVICE
   const handleSend = () => {
     if (!input.trim()) return;
 
@@ -77,13 +74,10 @@ export default function ChatPage() {
     setInput("");
   };
 
-  // 🔥 DEAL ACTIONS
   const handleAccept = (index) => {
     setMessages((prev) =>
       prev.map((msg, i) =>
-        i === index
-          ? { ...msg, dealStatus: "accepted" }
-          : msg
+        i === index ? { ...msg, dealStatus: "accepted" } : msg
       )
     );
   };
@@ -91,14 +85,11 @@ export default function ChatPage() {
   const handleDone = (index) => {
     setMessages((prev) =>
       prev.map((msg, i) =>
-        i === index
-          ? { ...msg, dealStatus: "done" }
-          : msg
+        i === index ? { ...msg, dealStatus: "done" } : msg
       )
     );
   };
 
-  // 🔥 AUTO SCROLL
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -106,7 +97,7 @@ export default function ChatPage() {
   return (
     <div className="h-[100dvh] flex bg-background p-2 md:p-4 gap-2 md:gap-4">
 
-      {/* ================= LEFT ================= */}
+      {/* LEFT */}
       <div
         className={`w-full md:w-[320px] ${
           isMobileChatOpen ? "hidden md:block" : "block"
@@ -148,9 +139,9 @@ export default function ChatPage() {
         </div>
       </div>
 
-      {/* ================= RIGHT ================= */}
+      {/* RIGHT */}
       <div
-        className={`flex-1 flex flex-col h-full ${
+        className={`flex-1 flex flex-col ${
           !isMobileChatOpen ? "hidden md:flex" : "flex"
         } bg-white border border-primary/10 rounded-2xl`}
       >
@@ -178,7 +169,7 @@ export default function ChatPage() {
               </div>
             </div>
 
-            {/* 🔥 SERVICE PREVIEW */}
+            {/* SERVICE PREVIEW */}
             <div className="p-3 border-b bg-accent/10">
               <div className="bg-white p-3 rounded-xl flex justify-between items-center shadow-sm">
                 <div>
@@ -197,7 +188,7 @@ export default function ChatPage() {
             </div>
 
             {/* CHAT */}
-            <div className="flex-1 p-4 space-y-4 overflow-y-auto">
+            <div className="flex-1 p-4 pb-28 space-y-4 overflow-y-auto">
               {messages.map((m, i) => (
                 <div
                   key={i}
@@ -209,40 +200,51 @@ export default function ChatPage() {
                 >
                   <div className="max-w-[75%]">
 
-                    {/* 🔥 SERVICE + DEAL CARD */}
+                    {/* 🔥 MODERN SERVICE CARD */}
                     {m.service && (
-                      <div className="bg-white border rounded-xl p-3 mb-1 shadow-sm">
+                      <div className="bg-gradient-to-br from-white to-accent/10 border border-accent/20 rounded-2xl p-3 mb-2 shadow-sm">
 
-                        <p className="text-sm font-semibold text-primary">
-                          {m.service.title}
-                        </p>
+                        <div className="flex justify-between items-center">
+                          <p className="text-sm font-semibold text-primary">
+                            {m.service.title}
+                          </p>
 
-                        <p className="text-xs text-primary/60">
+                          <span className="text-[10px] bg-accent/20 text-accent px-2 py-1 rounded-full">
+                            Jasa
+                          </span>
+                        </div>
+
+                        <p className="text-sm font-bold text-primary mt-1">
                           {m.service.price}
                         </p>
 
-                        {/* STATUS */}
                         {m.dealStatus === "pending" && (
                           <button
                             onClick={() => handleAccept(i)}
-                            className="mt-2 w-full bg-primary text-white text-xs py-2 rounded-lg"
+                            className="mt-3 w-full bg-primary text-white text-xs py-2.5 rounded-xl hover:scale-[1.02] active:scale-[0.98] transition"
                           >
                             Deal Sekarang
                           </button>
                         )}
 
                         {m.dealStatus === "accepted" && (
-                          <button
-                            onClick={() => handleDone(i)}
-                            className="mt-2 w-full bg-accent text-white text-xs py-2 rounded-lg"
-                          >
-                            Tandai Selesai
-                          </button>
+                          <div className="mt-3 space-y-2">
+                            <div className="text-center text-xs font-semibold text-primary bg-primary/10 py-1 rounded-lg">
+                              ✔ Sudah Deal
+                            </div>
+
+                            <button
+                              onClick={() => handleDone(i)}
+                              className="w-full bg-accent text-white text-xs py-2.5 rounded-xl"
+                            >
+                              Tandai Selesai
+                            </button>
+                          </div>
                         )}
 
                         {m.dealStatus === "done" && (
-                          <div className="mt-2 text-center text-xs text-green-600 font-semibold">
-                            ✔ Selesai
+                          <div className="mt-3 text-center text-xs font-semibold text-green-600 bg-green-100 py-2 rounded-xl">
+                            ✔ Pekerjaan Selesai
                           </div>
                         )}
                       </div>
@@ -266,8 +268,8 @@ export default function ChatPage() {
               <div ref={chatEndRef} />
             </div>
 
-            {/* INPUT */}
-            <div className="p-3 border-t bg-white sticky bottom-0 z-10 pb-[env(safe-area-inset-bottom)]">
+            {/* INPUT FIXED */}
+            <div className="fixed bottom-0 left-0 right-0 md:static z-50 bg-white border-t p-3 pb-[env(safe-area-inset-bottom)]">
               <div className="flex gap-2">
                 <input
                   value={input}
@@ -276,12 +278,12 @@ export default function ChatPage() {
                     e.key === "Enter" && handleSend()
                   }
                   placeholder="Tulis pesan..."
-                  className="flex-1 border rounded-xl px-4 py-2"
+                  className="flex-1 border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-accent/30"
                 />
 
                 <button
                   onClick={handleSend}
-                  className="bg-accent text-white p-3 rounded-xl"
+                  className="bg-accent text-white p-3 rounded-xl hover:scale-105 active:scale-95 transition"
                 >
                   <Send size={18} />
                 </button>

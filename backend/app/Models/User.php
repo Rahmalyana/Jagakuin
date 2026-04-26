@@ -11,27 +11,24 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * Field yang boleh diisi mass assignment
-     */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'bio',
+        'tags',
+        'profile_image',
+        'rating',
     ];
 
-    /**
-     * Field yang disembunyikan dari response JSON
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Casting data
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'tags' => 'array',
+        'rating' => 'float',
     ];
 }

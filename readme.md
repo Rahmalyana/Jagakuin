@@ -58,4 +58,7 @@ generate key & migrate:
     npm install
     npm run dev
 
+## Sanctum Require
+    composer require laravel/sanctum
+
 akses localhost
