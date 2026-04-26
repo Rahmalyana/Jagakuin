@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const servicedetail = () => {
   return (
@@ -8,7 +8,7 @@ const servicedetail = () => {
 
       <div className="space-y-4">
         <p className="text-sm font-medium">Umur Anak : 5 Tahun</p>
-        
+
         <div className="space-y-1">
           <p className="text-sm font-medium">Tugas:</p>
           <ul className="list-disc ml-6 text-sm space-y-1 text-gray-200">
@@ -20,7 +20,9 @@ const servicedetail = () => {
         <div className="pt-2 text-sm space-y-1">
           <p>Tanggal : 21 Desember 2025</p>
           <p>Jam : 13.00 - 15.00 WIB</p>
-          <p className="text-lg font-bold text-orange-400 mt-2">Uang Rp. 30.000</p>
+          <p className="text-lg font-bold text-orange-400 mt-2">
+            Uang Rp. 30.000
+          </p>
         </div>
       </div>
 
