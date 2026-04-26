@@ -7,13 +7,16 @@ use App\Http\Controllers\API\DealController;
 use App\Http\Controllers\API\ReviewController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\ServiceController;
 use App\Models\User;
+
 
 /*
 |--------------------------------------------------------------------------
 | PUBLIC ROUTES (tanpa login)
 |--------------------------------------------------------------------------
 */
+Route::get('/services', [ServiceController::class, 'index']);
 
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
@@ -47,4 +50,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // reviews
     Route::get('/reviews', [ReviewController::class, 'index']);
     Route::post('/review', [ReviewController::class, 'store']);
+
+    //service
+    Route::post('/services', [ServiceController::class, 'store']);
+    
 });

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Search,
   ChevronLeft,
@@ -10,65 +10,96 @@ import {
 import ServiceDetail from "./ServiceDetail";
 
 export default function Services() {
-  const [services, setServices] = useState([
-    {
-      id: 1,
-      name: "Rizki",
-      type: "Membutuhkan Jasa",
-      category: "Jaga Anak",
-      payment: "Uang",
-      duration: "2 Jam",
-      rating: 4,
-    },
-    {
-      id: 2,
-      name: "Susi",
-      type: "Menyediakan Jasa",
-      category: "Jaga Anak",
-      payment: "Barter",
-      duration: "2 Jam",
-      rating: 4,
-    },
-    {
-      id: 3,
-      name: "Fatin",
-      type: "Membutuhkan Jasa",
-      category: "Jaga Anak",
-      payment: "Barter",
-      duration: "2 Jam",
-      rating: 4,
-    },
-  ]);
-
+  const [services, setServices] = useState([]);
   const [activeTab, setActiveTab] = useState("membutuhkan");
   const [expandedId, setExpandedId] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  // --- LOGIKA FILTER KATEGORI BARU ---
+  const categories = ["Jaga Anak", "Jaga Lansia", "Jaga Properti"];
+  const [catIndex, setCatIndex] = useState(0); // Dimulai dari index 0 (Jaga Anak)
+  const activeCategory = categories[catIndex];
+
+  const handleNext = () => {
+    setCatIndex((prev) => (prev + 1) % categories.length); // Muter ke depan
+  };
+
+  const handleBack = () => {
+    setCatIndex((prev) => (prev - 1 + categories.length) % categories.length); // Muter ke belakang
+  };
+  // ------------------------------------
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/api/services")
+      .then((res) => res.json())
+      .then((data) => {
+        const formattedData = data.map((item) => ({
+          ...item,
+          type:
+            item.type === "membutuhkan"
+              ? "Membutuhkan Jasa"
+              : "Menyediakan Jasa",
+          // Pastikan format category dari DB sama dengan array categories di atas
+          category: item.category
+            .split("_")
+            .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+            .join(" "),
+        }));
+        setServices(formattedData);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
+
+  // Filter sekarang mengecek Tipe DAN Kategori
+  // Ganti logika filteredServices kamu dengan yang ini:
   const filteredServices = services.filter((item) => {
-    if (activeTab === "membutuhkan") return item.type === "Membutuhkan Jasa";
-    if (activeTab === "menyediakan") return item.type === "Menyediakan Jasa";
-    return true;
+    // 1. Cek Tipe Jasa
+    const matchType =
+      activeTab === "membutuhkan"
+        ? item.type === "Membutuhkan Jasa"
+        : item.type === "Menyediakan Jasa";
+
+    // 2. Cek Kategori (Kita buat keduanya jadi huruf kecil agar pasti cocok)
+    // Ini akan mencocokkan "Jaga Lansia" dengan "Jaga Lansia" dari DB yang sudah diformat
+    const matchCategory = item.category.trim() === activeCategory.trim();
+
+    return matchType && matchCategory;
   });
 
-  const toggleExpand = (id) => {
-    setExpandedId(expandedId === id ? null : id);
-  };
+  // ... (toggleExpand dan loading state)
+
+  if (loading) return <div className="text-center pt-20">Memuat jasa...</div>;
 
   return (
     // Menggunakan bg-background
     <div className="min-h-screen bg-background font-sans p-4">
       <div className="max-w-6xl mx-auto">
-        {/* Header Judul */}
+        {/* Header Judul - Diperbarui */}
         <div className="flex items-center gap-3 mb-6 max-w-2xl mx-auto px-2">
-          <button className="p-2 hover:bg-gray-100 rounded-full transition flex-shrink-0">
+          {/* Tombol Back */}
+          <button
+            onClick={handleBack}
+            className="p-2 hover:bg-gray-100 rounded-full transition flex-shrink-0"
+          >
             <ChevronLeft size={28} className="text-slate-700" />
           </button>
-          {/* Kotak judul menggunakan bg-background */}
+
+          {/* Kotak judul Dinamis */}
           <div className="flex-1 border-2 border-slate-200 rounded-full py-2 px-6 bg-background shadow-sm flex justify-center items-center">
             <h1 className="text-xl md:text-2xl font-extrabold text-accent tracking-tight">
-              Jaga Anak
+              {activeCategory}
             </h1>
           </div>
-          <button className="p-2 hover:bg-gray-100 rounded-full transition flex-shrink-0">
+
+          {/* Tombol Next */}
+          <button
+            onClick={handleNext}
+            className="p-2 hover:bg-gray-100 rounded-full transition flex-shrink-0"
+          >
             <ChevronRight size={28} className="text-slate-700" />
           </button>
         </div>
