@@ -11,7 +11,7 @@ export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const showSearch = ["/", "/home", "/chat", "/services"].includes(
+  const showSearch = ["/", "/chat", "/services"].includes(
     location.pathname
   );
 
@@ -126,7 +126,7 @@ export default function Navbar() {
 
             {/* DESKTOP MENU */}
             <div className="hidden md:flex items-center gap-4">
-              {navItem("/home", "Home")}
+              {navItem("/", "Home")}
               {navItem("/services", "Services")}
               {navItem("/chat", "Chat")}
               {navItem("/profile", "Profile")}
@@ -181,7 +181,7 @@ export default function Navbar() {
           }`}
         >
           <div className="bg-accent/95 rounded-2xl p-5 space-y-5 shadow-lg">
-            {navItem("/home", "Home")}
+            {navItem("/", "Home")}
             {navItem("/services", "Services")}
             {navItem("/chat", "Chat")}
             {navItem("/profile", "Profile")}

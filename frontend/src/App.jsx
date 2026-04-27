@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/navbar";
-import Footer from "./components/footer"; // 1. Import Footer kamu di sini
+import Footer from "./components/footer";
 
 import ChatResponsive from "./pages/ChatResponsive";
 import ChatDetail from "./pages/ChatDetail";
@@ -12,6 +12,7 @@ import Tambah from "./pages/tambah";
 import ChatPage from "./pages/chatpage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
+import PublicOnlyRoute from "./components/PublicOnlyRoute";
 
 function Layout() {
   const location = useLocation();
@@ -19,40 +20,75 @@ function Layout() {
   // Hide navbar di chat detail
   const hideNavbar = location.pathname.startsWith("/chat/");
 
-  // 2. Logika Sembunyikan Footer:
-  // Kita sembunyikan di list chat (/chat) DAN detail chat (/chat/123)
+  // Hide footer di semua halaman chat
   const hideFooter = location.pathname.startsWith("/chat");
 
   return (
     <div className="bg-background min-h-screen flex flex-col">
-      {" "}
-      {/* Tambah flex flex-col */}
       {!hideNavbar && <Navbar />}
+
       <main
         className={`
-          flex-grow  /* 3. Biar main ngedorong footer ke paling bawah */
+          flex-grow
           min-h-screen
           ${!hideNavbar ? "pt-[90px]" : ""}
           px-4 md:px-6
         `}
       >
         <Routes>
-          <Route path="/auth" element={<Auth />} />
+          {/* PUBLIC */}
+          <Route path="/" element={<Home />} />
+          <Route path="/services" element={<Services />} />
+
+          {/* AUTH (guest only) */}
           <Route
-            path="/"
+            path="/auth"
+            element={
+              <PublicOnlyRoute>
+                <Auth />
+              </PublicOnlyRoute>
+            }
+          />
+
+          {/* PROTECTED */}
+          <Route
+            path="/chat"
             element={
               <ProtectedRoute>
-                <Home />
+                <ChatPage />
               </ProtectedRoute>
             }
           />
-          <Route path="/services" element={<Services />} />
-          <Route path="/chat" element={<ChatPage />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/tambah" element={<Tambah />} />
+
+          <Route
+            path="/chat/:id"
+            element={
+              <ProtectedRoute>
+                <ChatDetail />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/tambah"
+            element={
+              <ProtectedRoute>
+                <Tambah />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </main>
-      {/* 4. Tampilkan Footer jika bukan di halaman chat */}
+
       {!hideFooter && <Footer />}
     </div>
   );

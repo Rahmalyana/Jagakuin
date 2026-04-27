@@ -25,13 +25,13 @@ export default function Home() {
 
           <div className="mt-6 flex gap-4">
             <Link
-              to="/register"
+              to="/services"
               className="bg-accent text-white px-6 py-3 rounded-lg hover:bg-accent/70 transition-all duration-300 hover:scale-105"
             >
               Cari Layanan Sekarang
             </Link>
             <Link
-              to="/dashboard"
+              to="/tambah"
               className="border border-accent text-primary px-6 py-3 rounded-lg hover:bg-accent transition-all duration-300 hover:scale-105"
             >
               Tawarkan Jasa Anda
