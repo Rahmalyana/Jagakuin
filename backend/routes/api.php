@@ -33,24 +33,7 @@ Route::prefix('auth')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
-
-
-
-    // posts
-    Route::apiResource('posts', PostController::class);
-
-    // chats
-    Route::get('/chats', [ChatController::class, 'index']);
-    Route::post('/chat/send', [ChatController::class, 'send']);
-
-    // deals
-    Route::get('/deals', [DealController::class, 'index']);
-    Route::post('/deal/agree', [DealController::class, 'agree']);
-
-    // reviews
-    Route::get('/reviews', [ReviewController::class, 'index']);
-    Route::post('/review', [ReviewController::class, 'store']);
-
+    
     //service
     Route::post('/services', [ServiceController::class, 'store']);
 
