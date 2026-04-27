@@ -53,7 +53,7 @@ export default function Auth() {
       localStorage.setItem("user", JSON.stringify(data.user));
 
       // redirect pake react router (jangan window.location)
-      navigate("/home");
+      navigate("/");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -62,7 +62,7 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+    <div className="min-h-screen flex items-start justify-center bg-background px-4 pt-24">
       <motion.div
         key={isLogin}
         initial={{ opacity: 0, y: 30 }}

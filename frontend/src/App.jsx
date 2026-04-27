@@ -4,7 +4,6 @@ import Footer from "./components/footer"; // 1. Import Footer kamu di sini
 
 import ChatResponsive from "./pages/ChatResponsive";
 import ChatDetail from "./pages/ChatDetail";
-import LandingPage from "./pages/landingpage";
 import Auth from "./pages/auth";
 import Home from "./pages/home";
 import Services from "./pages/services";
@@ -38,10 +37,9 @@ function Layout() {
         `}
       >
         <Routes>
-          <Route path="/" element={<LandingPage />} />
           <Route path="/auth" element={<Auth />} />
           <Route
-            path="/home"
+            path="/"
             element={
               <ProtectedRoute>
                 <Home />
