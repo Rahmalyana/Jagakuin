@@ -37,7 +37,7 @@ export default function Profile() {
   );
 
   return (
-    <div className="bg-[#FCFCF7] min-h-screen">
+    <div className="bg-[#FCFCF7] min-h-screen font-sans">
       <div className="max-w-3xl mx-auto px-4">
 
         {/* HEADER */}

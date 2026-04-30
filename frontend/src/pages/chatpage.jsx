@@ -14,7 +14,7 @@ import {
 
 export default function ChatPage() {
   const location = useLocation();
-  const serviceFromPage = location.state?.service; // 🔥 dari halaman service
+  const serviceFromPage = location.state?.service;
 
   const initialChats = [
     {
@@ -42,7 +42,7 @@ export default function ChatPage() {
 
   const chatEndRef = useRef(null);
 
-  // 🔥 REALTIME
+  // REALTIME FIRESTORE
   useEffect(() => {
     const q = query(
       collection(db, "messages"),
@@ -61,12 +61,12 @@ export default function ChatPage() {
     return () => unsubscribe();
   }, []);
 
-  // 🔥 AUTO SCROLL
+  // AUTO SCROLL
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // 🔥 INITIAL MESSAGE JIKA DARI SERVICE
+  // INITIAL MESSAGE FROM SERVICE
   useEffect(() => {
     if (!serviceFromPage) return;
 
@@ -83,7 +83,7 @@ export default function ChatPage() {
     sendInitial();
   }, []);
 
-  // 🔥 SELECT CHAT
+  // SELECT CHAT
   const handleSelectChat = (chat) => {
     setActiveChat(chat);
     setChats((prev) =>
@@ -94,7 +94,7 @@ export default function ChatPage() {
     setIsMobileChatOpen(true);
   };
 
-  // 🔥 SEND NORMAL CHAT (NO SERVICE)
+  // SEND MESSAGE
   const handleSend = async () => {
     if (!input.trim()) return;
 
@@ -107,7 +107,7 @@ export default function ChatPage() {
     setInput("");
   };
 
-  // 🔥 DEAL ACTION (masih local)
+  // DEAL ACTION
   const handleAccept = (id) => {
     setMessages((prev) =>
       prev.map((msg) =>
@@ -116,22 +116,14 @@ export default function ChatPage() {
     );
   };
 
-  const handleDone = (id) => {
-    setMessages((prev) =>
-      prev.map((msg) =>
-        msg.id === id ? { ...msg, dealStatus: "done" } : msg
-      )
-    );
-  };
-
   return (
-    <div className="h-[100dvh] flex bg-background p-2 md:p-4 gap-2 md:gap-4">
+    <div className="h-[100dvh] flex bg-background font-sans p-2 md:p-4 gap-2 md:gap-4">
 
-      {/* LEFT */}
+      {/* LEFT CHAT LIST */}
       <div
         className={`w-full md:w-[320px] ${
           isMobileChatOpen ? "hidden md:block" : "block"
-        } bg-white border border-primary/10 rounded-2xl overflow-hidden shadow-sm`}
+        } bg-white border border-primary/10 rounded-2xl overflow-hidden`}
       >
         <div className="p-4 font-semibold text-primary border-b">
           Chat
@@ -169,12 +161,9 @@ export default function ChatPage() {
         </div>
       </div>
 
-      {/* RIGHT */}
-      <div
-        className={`flex-1 flex flex-col ${
-          !isMobileChatOpen ? "hidden md:flex" : "flex"
-        } bg-white border border-primary/10 rounded-2xl`}
-      >
+      {/* RIGHT CHAT BOX */}
+      <div className="flex-1 flex flex-col h-[100dvh] bg-white border border-primary/10 rounded-2xl overflow-hidden">
+
         {activeChat ? (
           <>
             {/* HEADER */}
@@ -199,24 +188,22 @@ export default function ChatPage() {
               </div>
             </div>
 
-            {/* 🔥 SERVICE PREVIEW (hanya kalau dari service) */}
+            {/* SERVICE PREVIEW */}
             {serviceFromPage && (
               <div className="p-3 border-b bg-accent/10">
-                <div className="bg-white p-3 rounded-xl flex justify-between items-center shadow-sm">
-                  <div>
-                    <p className="text-sm font-semibold text-primary">
-                      {serviceFromPage.title}
-                    </p>
-                    <p className="text-xs text-primary/60">
-                      {serviceFromPage.price} • {serviceFromPage.date}
-                    </p>
-                  </div>
+                <div className="bg-white p-3 rounded-xl shadow-sm">
+                  <p className="text-sm font-semibold text-primary">
+                    {serviceFromPage.title}
+                  </p>
+                  <p className="text-xs text-primary/60">
+                    {serviceFromPage.price} • {serviceFromPage.date}
+                  </p>
                 </div>
               </div>
             )}
 
-            {/* CHAT */}
-            <div className="flex-1 p-4 pb-28 space-y-4 overflow-y-auto">
+            {/* MESSAGES (SCROLL AREA) */}
+            <div className="flex-1 p-4 space-y-4 overflow-y-auto">
               {messages.map((m) => (
                 <div
                   key={m.id}
@@ -229,7 +216,7 @@ export default function ChatPage() {
                   <div className="max-w-[75%]">
 
                     {m.service && (
-                      <div className="bg-gradient-to-br from-white to-accent/10 border border-accent/20 rounded-2xl p-3 mb-2 shadow-sm">
+                      <div className="bg-gradient-to-br from-white to-accent/10 border rounded-2xl p-3 mb-2">
                         <p className="text-sm font-semibold text-primary">
                           {m.service.title}
                         </p>
@@ -250,8 +237,7 @@ export default function ChatPage() {
                     )}
 
                     <div
-                      className={`px-4 py-2 text-sm rounded-2xl shadow
-                      ${
+                      className={`px-4 py-2 text-sm rounded-2xl shadow ${
                         m.from === "me"
                           ? "bg-primary text-white"
                           : "bg-white border"
@@ -266,8 +252,8 @@ export default function ChatPage() {
               <div ref={chatEndRef} />
             </div>
 
-            {/* INPUT */}
-            <div className="fixed bottom-0 left-0 right-0 md:static bg-white border-t p-3">
+            {/* INPUT (FIXED INSIDE BOX) */}
+            <div className="bg-white border-t p-3">
               <div className="flex gap-2">
                 <input
                   value={input}
