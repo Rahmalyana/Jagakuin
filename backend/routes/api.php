@@ -33,13 +33,14 @@ Route::prefix('auth')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
-    
+
     //service
     Route::post('/services', [ServiceController::class, 'store']);
 
     // profile
-    Route::get('/user', [ProfileController::class, 'show']);
-    Route::put('/user', [ProfileController::class, 'update']);
-    Route::put('/user/password', [ProfileController::class, 'updatePassword']);
+    Route::get('/profile', [ProfileController::class, 'show']);
+    Route::put('/profile', [ProfileController::class, 'update']);
+    Route::post('/profile/photo', [ProfileController::class, 'uploadPhoto']);
+    Route::put('/profile/password', [ProfileController::class, 'changePassword']);
 
 });

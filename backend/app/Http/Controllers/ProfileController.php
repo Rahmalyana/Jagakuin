@@ -3,47 +3,81 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
-    // GET PROFILE
-    public function show(Request $request)
+    // ================= GET PROFILE =================
+    public function show()
     {
-        return response()->json($request->user());
+        $user = Auth::user();
+
+        return response()->json([
+            'name' => $user->name,
+            'email' => $user->email,
+            'bio' => $user->bio,
+            'tags' => $user->tags,
+            'rating' => $user->rating,
+            'profile_image_url' => $user->profile_image
+                ? asset('storage/' . $user->profile_image)
+                : null,
+        ]);
     }
 
-    // UPDATE PROFILE
+    // ================= UPDATE PROFILE =================
     public function update(Request $request)
     {
-        $user = $request->user();
+        $user = Auth::user();
 
-        $request->validate([
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
             'bio' => 'nullable|string',
             'tags' => 'nullable|array',
-            'profile_image' => 'nullable|string',
         ]);
 
+        $user->update($validated);
+
+        return response()->json([
+            'message' => 'Profile berhasil diupdate'
+        ]);
+    }
+
+    // ================= UPLOAD FOTO =================
+    public function uploadPhoto(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'photo' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        // hapus foto lama (kalau ada)
+        if ($user->profile_image && Storage::disk('public')->exists($user->profile_image)) {
+            Storage::disk('public')->delete($user->profile_image);
+        }
+
+        // simpan foto baru
+        $path = $request->file('photo')->store('profiles', 'public');
+
         $user->update([
-            'bio' => $request->bio,
-            'tags' => $request->tags,
-            'profile_image' => $request->profile_image,
+            'profile_image' => $path,
         ]);
 
         return response()->json([
-            'message' => 'Profile berhasil diupdate',
-            'data' => $user
+            'url' => asset('storage/' . $path),
         ]);
     }
 
-    // UPDATE PASSWORD
-    public function updatePassword(Request $request)
+    // ================= CHANGE PASSWORD =================
+    public function changePassword(Request $request)
     {
-        $user = $request->user();
+        $user = Auth::user();
 
         $request->validate([
             'old_password' => 'required',
-            'new_password' => 'required|min:6',
+            'new_password' => 'required|min:6|confirmed',
         ]);
 
         if (!Hash::check($request->old_password, $user->password)) {
@@ -52,8 +86,12 @@ class ProfileController extends Controller
             ], 400);
         }
 
-        $user->password = Hash::make($request->new_password);
-        $user->save();
+        // update password
+        $user->update([
+            'password' => Hash::make($request->new_password),
+        ]);
+
+        $user->currentAccessToken()->delete();
 
         return response()->json([
             'message' => 'Password berhasil diubah'
