@@ -14,7 +14,7 @@ export default function Tambah() {
     <div className="min-h-screen bg-background md:bg-gray-50 flex justify-center pb-20">
       <div className="w-full max-w-xl bg-background min-h-screen md:min-h-0 md:my-10 md:rounded-[3rem] md:shadow-xl p-6 md:p-10">
         {/* Header Judul - Menggunakan text-accent */}
-        <h1 className="text-2xl md:text-3xl font-black text-primary text-center mb-8">
+        <h1 className="text-xl md:text-2xl font-black text-primary text-center mb-8">
           {title}
         </h1>
 
@@ -39,7 +39,7 @@ export default function Tambah() {
         <form className="space-y-6">
           {/* Input Umur */}
           <div className="space-y-2">
-            <label className="text-primary font-black text-lg">Umur Anak</label>
+            <label className="text-primary font-black text-md">Umur Anak</label>
             <input
               type="text"
               placeholder="Ketikan umur anak yang akan dijaga"
@@ -49,7 +49,7 @@ export default function Tambah() {
 
           {/* Jenis Kelamin */}
           <div className="space-y-2">
-            <label className="text-primary font-black text-lg">
+            <label className="text-primary font-black text-md">
               Jenis Kelamin
             </label>
             <div className="flex gap-8">
@@ -64,7 +64,7 @@ export default function Tambah() {
                       className="peer appearance-none w-6 h-6 border-2 border-orange-200 rounded-lg checked:bg-accent checked:border-accent transition-all"
                     />
                     <Plus
-                      size={14}
+                      size={10}
                       className="absolute text-white opacity-0 peer-checked:opacity-100 transition-opacity"
                     />
                   </div>
@@ -78,7 +78,7 @@ export default function Tambah() {
 
           {/* Rincian Tugas */}
           <div className="space-y-2">
-            <label className="text-primary font-black text-lg">
+            <label className="text-primary font-black text-md">
               Rincian Tugas yang harus dilakukan
             </label>
             <div className="border-2 border-slate-400 rounded-[2.5rem] p-6 space-y-4 bg-background">
@@ -96,7 +96,7 @@ export default function Tambah() {
           {/* Tanggal & Waktu */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="text-primary font-black text-lg">
+              <label className="text-primary font-black text-md">
                 Tanggal Jaga
               </label>
               <div className="flex items-center gap-3">
@@ -111,7 +111,7 @@ export default function Tambah() {
               </div>
             </div>
             <div className="space-y-2">
-              <label className="text-primary font-black text-lg">
+              <label className="text-primary font-black text-md">
                 Waktu Jaga
               </label>
               <div className="flex items-center gap-3">
@@ -130,7 +130,7 @@ export default function Tambah() {
           {/* Pembayaran & Nominal */}
           <div className="space-y-6">
             <div className="space-y-2">
-              <label className="text-primary font-black text-lg">
+              <label className="text-primary font-black text-md">
                 Metode Pembayaran
               </label>
               <input
@@ -140,7 +140,7 @@ export default function Tambah() {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-primary font-black text-lg">
+              <label className="text-primary font-black text-md">
                 Nominal Rp. /Barang /Jasa
               </label>
               <input

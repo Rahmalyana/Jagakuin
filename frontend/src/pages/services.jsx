@@ -90,7 +90,7 @@ export default function Services() {
 
           {/* Kotak judul Dinamis */}
           <div className="flex-1 border-2 border-slate-200 rounded-full py-2 px-6 bg-background shadow-sm flex justify-center items-center">
-            <h1 className="text-xl md:text-2xl font-extrabold text-accent tracking-tight">
+            <h1 className="text-xl md:text-2xl font-bold text-accent tracking-tight">
               {activeCategory}
             </h1>
           </div>
@@ -174,7 +174,7 @@ export default function Services() {
                   {/* Konten Card */}
                   <div className="flex-1">
                     <p
-                      className={`text-[10px] font-medium mb-1 ${isExpanded ? "text-orange-200" : "text-accent"}`}
+                      className={`text-sm font-medium mb-1 ${isExpanded ? "text-orange-200" : "text-accent"}`}
                     >
                       {item.type}
                     </p>
