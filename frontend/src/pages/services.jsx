@@ -7,7 +7,7 @@ import {
   ChevronDown,
   Star,
 } from "lucide-react";
-import ServiceDetail from "./ServiceDetail";
+import ServiceDetail from "./servicedetail";
 
 export default function Services() {
   const [services, setServices] = useState([]);
@@ -70,7 +70,10 @@ export default function Services() {
     return matchType && matchCategory;
   });
 
-  // ... (toggleExpand dan loading state)
+  // Fungsi untuk membuka/menutup card detail
+  const toggleExpand = (id) => {
+    setExpandedId((prevId) => (prevId === id ? null : id));
+  };
 
   if (loading) return <div className="text-center pt-20">Memuat jasa...</div>;
 
@@ -194,22 +197,39 @@ export default function Services() {
                   </div>
 
                   {/* Actions */}
-                  <div className="flex flex-col justify-between items-end h-full py-2 pr-2 self-stretch">
-                    <button
-                      className={`${isExpanded ? "bg-accent" : "bg-primary"} p-2 rounded-lg text-white mb-6 transition-colors`}
-                    >
-                      <MessageSquare size={18} />
-                    </button>
+                  {/* Actions */}
+                  <div className="flex flex-col justify-between items-end h-full py-2 pr-2 self-stretch z-20">
+                    {/* Wrapper untuk Teks & Tombol Chat */}
+                    <div className="flex items-center gap-2 mb-6">
+                      <span
+                        className={`text-[10px] md:text-xs font-medium italic animate-pulse ${
+                          isExpanded ? "text-orange-200" : "text-slate-400"
+                        }`}
+                      >
+                        Tertarik?
+                      </span>
+                      <button
+                        className={`${
+                          isExpanded ? "bg-accent" : "bg-primary"
+                        } p-2 rounded-lg text-white transition-all hover:scale-105 shadow-sm`}
+                        title="Chat dengan penyedia jasa"
+                      >
+                        <MessageSquare size={18} />
+                      </button>
+                    </div>
+
                     <ChevronDown
                       onClick={() => toggleExpand(item.id)}
-                      className={`cursor-pointer transition-transform duration-300 ${isExpanded ? "rotate-180 text-accent" : "text-slate-600"}`}
+                      className={`cursor-pointer transition-transform duration-300 ${
+                        isExpanded ? "rotate-180 text-accent" : "text-slate-600"
+                      }`}
                       size={28}
                     />
                   </div>
                 </div>
 
-                {/* Detail Section */}
-                {isExpanded && <ServiceDetail />}
+                {/* Detail Section - Kirim 'item' sebagai props 'data' */}
+                {isExpanded && <ServiceDetail data={item} />}
               </div>
             );
           })}

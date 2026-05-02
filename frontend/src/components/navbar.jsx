@@ -14,9 +14,7 @@ export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const showSearch = ["/", "/chat", "/services"].includes(
-    location.pathname
-  );
+  const showSearch = ["/", "/chat", "/services"].includes(location.pathname);
 
   // ================= LOGIN CHECK (KEEP ORIGINAL) =================
   useEffect(() => {
@@ -109,13 +107,9 @@ export default function Navbar() {
             <Link to="/" className="flex items-center gap-2">
               <img
                 src="/src/assets/LOGOO.png"
-                className={`transition-all ${
-                  scrolled ? "w-8 h-8" : "w-9 h-9"
-                }`}
+                className={`transition-all ${scrolled ? "w-8 h-8" : "w-9 h-9"}`}
               />
-              <span className="text-white font-semibold">
-                Jagakuin
-              </span>
+              <span className="text-white font-semibold">Jagakuin</span>
             </Link>
 
             {/* DESKTOP MENU */}
@@ -216,15 +210,18 @@ export default function Navbar() {
       {showModal && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[100] p-4">
           <div className="bg-white rounded-2xl p-6 w-full max-w-sm text-center">
-            <h2 className="text-lg font-bold mb-4">
-              Pilih Jenis Postingan
-            </h2>
-
-            <button className="w-full bg-accent text-white py-3 rounded-xl mb-2">
+            <h2 className="text-lg font-bold mb-4">Pilih Jenis Postingan</h2>
+            <button
+              onClick={() => handleChoice("butuh")}
+              className="w-full bg-accent text-white py-3 rounded-xl mb-2"
+            >
               Membutuhkan Jasa
             </button>
 
-            <button className="w-full border border-accent text-accent py-3 rounded-xl">
+            <button
+              onClick={() => handleChoice("sedia")}
+              className="w-full border border-accent text-accent py-3 rounded-xl"
+            >
               Menyediakan Jasa
             </button>
 

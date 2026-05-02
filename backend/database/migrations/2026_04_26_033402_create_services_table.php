@@ -21,6 +21,14 @@ return new class extends Migration
             $table->integer('rating')->default(5);
             $table->text('description')->nullable(); // Rincian tugas
             $table->string('price'); // Nominal Rp / Barang
+            
+            // 👇 INI TAMBAHANNYA 👇
+            $table->string('date')->nullable();
+            $table->string('time')->nullable();
+            $table->string('child_age')->nullable();
+            $table->string('elder_age')->nullable();
+            $table->string('gender')->nullable();
+            
             $table->timestamps();
         });
     }

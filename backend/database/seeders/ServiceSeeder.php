@@ -1,7 +1,7 @@
 <?php
 
 namespace Database\Seeders;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 use App\Models\Service;
 
@@ -11,6 +11,7 @@ class ServiceSeeder extends Seeder
     {
         // Tips: Pakai truncate() kalau mau hapus data lama dulu sebelum isi baru
         // Service::truncate(); 
+        DB::table('services')->truncate();
 
         Service::insert([
             [
