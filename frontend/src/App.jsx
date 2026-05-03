@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 
@@ -97,6 +98,19 @@ function Layout() {
 export default function App() {
   return (
     <BrowserRouter>
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 3000,
+          style: {
+            borderRadius: "10px",
+            background: "#1B4758",
+            color: "#fff",
+            fontSize: "14px",
+          },
+        }}
+      />
+
       <Layout />
     </BrowserRouter>
   );
