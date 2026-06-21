@@ -211,7 +211,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-[#F8FAFC] to-[#EEF2F7] min-h-screen py-10">
+    <div className="bg-background min-h-screen py-10">
       <div className="max-w-3xl mx-auto px-4">
         <div className="bg-white rounded-3xl shadow-lg overflow-hidden">
           <div className="h-32 bg-gradient-to-r from-[#1B4758] to-[#256D85]" />
